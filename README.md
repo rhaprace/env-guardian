@@ -219,174 +219,211 @@ export const env = defineEnv({
 
 ## Error Handling
 
+**env-guardian** provides clear, actionable error messages to help you identify and fix issues quickly.
+
 ### Missing Required Variable
 
+```bash
+# Missing API_URL environment variable
+```
+
 ```typescript
-// Missing API_URL
 defineEnv({
   API_URL: ENV.string(),
 });
-
-// Throws:
-// EnvValidationError: Environment validation failed:
-//   - Missing required environment variable: API_URL
 ```
 
-### Invalid Type
+**Error:**
+```
+EnvValidationError: Environment validation failed:
+  - Missing required environment variable: API_URL
+```
+
+---
+
+### Invalid Type Conversion
+
+```bash
+# PORT=abc
+```
 
 ```typescript
-// PORT=abc (not a number)
 defineEnv({
   PORT: ENV.number(),
 });
-
-// Throws:
-// EnvValidationError: Environment validation failed:
-//   - Invalid number for PORT: expected number, got "abc"
 ```
 
-### Invalid Boolean
+**Error:**
+```
+EnvValidationError: Environment validation failed:
+  - Invalid number for PORT: expected number, got "abc"
+```
+
+---
+
+### Invalid Boolean Value
+
+```bash
+# DEBUG=yes
+```
 
 ```typescript
-// DEBUG=yes (not a valid boolean)
 defineEnv({
   DEBUG: ENV.boolean(),
 });
-
-// Throws:
-// EnvValidationError: Environment validation failed:
-//   - Invalid boolean for DEBUG: expected "true", "false", "1", or "0", got "yes"
 ```
 
-### Invalid Default
-
-```typescript
-// Invalid default type
-defineEnv({
-  PORT: ENV.number().default('3000'), // TypeScript error + runtime error
-});
-
-// Throws:
-// EnvValidationError: Invalid default value for PORT: expected number, got string
+**Error:**
+```
+EnvValidationError: Environment validation failed:
+  - Invalid boolean for DEBUG: expected "true", "false", "1", or "0", got "yes"
 ```
 
-### Multiple Errors
+---
+
+### Multiple Validation Errors
+
+```bash
+# Multiple issues in environment
+```
 
 ```typescript
-// Multiple missing variables
 defineEnv({
   API_URL: ENV.string(),
-  DATABASE_URL: ENV.string(),
   PORT: ENV.number(),
+  DEBUG: ENV.boolean(),
 });
-
-// Throws:
-// EnvValidationError: Environment validation failed:
-//   - Missing required environment variable: API_URL
-//   - Missing required environment variable: DATABASE_URL
-//   - Missing required environment variable: PORT
 ```
 
-## Type Inference
+**Error:**
+```
+EnvValidationError: Environment validation failed:
+  - Missing required environment variable: API_URL
+  - Invalid number for PORT: expected number, got "abc"
+  - Missing required environment variable: DEBUG
+```
 
-The package provides full TypeScript type inference:
+## TypeScript Type Inference
+
+The library automatically infers precise TypeScript types from your schema:
 
 ```typescript
 const env = defineEnv({
-  API_URL: ENV.string(),                      // string
-  PORT: ENV.number(),                         // number
-  DEBUG: ENV.boolean(),                       // boolean
-  OPTIONAL_URL: ENV.string().optional(),      // string | undefined
-  DEFAULT_PORT: ENV.number().default(3000),   // number
+  API_URL: ENV.string(),                    
+  PORT: ENV.number(),                       
+  DEBUG: ENV.boolean(),                     
+  OPTIONAL_KEY: ENV.string().optional(),    
+  DEFAULT_TIMEOUT: ENV.number().default(5000),
 });
 
-// Type of env:
+// Inferred type:
 // {
 //   API_URL: string;
 //   PORT: number;
 //   DEBUG: boolean;
-//   OPTIONAL_URL: string | undefined;
-//   DEFAULT_PORT: number;
+//   OPTIONAL_KEY: string | undefined;
+//   DEFAULT_TIMEOUT: number;
 // }
 ```
 
+This enables full IDE autocomplete and compile-time type checking throughout your application.
+
 ## Best Practices
 
-1. **Define env early** - Validate environment variables at application startup
-2. **Single source of truth** - Export from a single `env.ts` file
-3. **Fail fast** - Let validation errors crash the app during startup
-4. **Type safety** - Use the inferred types throughout your application
+### 1. Centralize Environment Configuration
+
+Create a single source of truth for environment variables:
 
 ```typescript
-// ✅ Good: Single env file
-// env.ts
-export const env = defineEnv({ ... });
+// config/env.ts
+import { defineEnv, ENV } from '@rhap/env-guardian';
 
-// app.ts
-import { env } from './env';
-
-// ❌ Bad: Multiple validation points
-// Validating in different files can lead to inconsistencies
+export const env = defineEnv({
+  // Define all environment variables here
+});
 ```
 
-## Build & Publish
+### 2. Validate Early
 
-### Build
+Call `defineEnv` at application startup to fail fast on configuration errors:
+
+```typescript
+// index.ts or main.ts
+import { env } from './config/env';
+
+// Environment is validated before app initialization
+startServer(env.PORT);
+```
+
+### 3. Use Descriptive Variable Names
+
+Follow platform conventions:
+
+```typescript
+// Node.js
+NODE_ENV, DATABASE_URL, API_KEY
+
+// Vite (must be prefixed with VITE_)
+VITE_API_URL, VITE_APP_TITLE
+
+// Next.js (public variables must be prefixed)
+NEXT_PUBLIC_API_URL, DATABASE_URL
+```
+
+### 4. Leverage Type Safety
+
+Let TypeScript catch errors at compile time:
+
+```typescript
+const env = defineEnv({
+  PORT: ENV.number().default(3000),
+});
+
+// ✅ Type-safe
+const port: number = env.PORT;
+
+// ❌ TypeScript error
+const port: string = env.PORT;
+```
+
+## Installation & Setup
+
+### Install Package
 
 ```bash
-npm install
-npm run build
+npm install @rhap/env-guardian
 ```
 
-This compiles TypeScript to the `dist/` directory.
+### Build from Source
 
-### Publish to npm
+```bash
+# Clone repository
+git clone https://github.com/your-org/env-guardian.git
+cd env-guardian
+
+# Install dependencies
+npm install
+
+# Build TypeScript
+npm run build
+
+# Output will be in dist/
+```
+
+### Publishing
 
 ```bash
 npm publish --access public
 ```
 
-## Development
+## Contributing
 
-### Project Structure
-
-```
-@rhap/env-guardian/
-├── src/
-│   ├── index.ts       # Main exports
-│   ├── schema.ts      # Schema types and builders
-│   └── validator.ts   # Validation engine
-├── dist/              # Compiled output (generated)
-├── package.json
-├── tsconfig.json
-├── README.md
-└── LICENSE
-```
-
-### Local Development
-
-```bash
-# Install dependencies
-npm install
-
-# Build
-npm run build
-
-# Test locally in another project
-npm link
-cd /path/to/test-project
-npm link @rhap/env-guardian
-```
+Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## License
 
-MIT © [Your Name/Organization]
+MIT © 2025
 
-## Contributing
+---
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## Support
-
-- 🐛 **Issues**: [GitHub Issues](https://github.com/your-org/env-guardian/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/your-org/env-guardian/discussions)
+**@rhap/env-guardian** - Type-safe environment validation for modern JavaScript applications.
