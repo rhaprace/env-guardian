@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build && node dist/test/test.js",
+    "type-check": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -29,7 +30,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/env-guardian.git"
+    "url": "https://github.com/rhaprace/env-guardian.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
