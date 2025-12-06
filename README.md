@@ -1,4 +1,4 @@
-# @rhap/env-guardian
+# env-guardian
 
 A production-ready, zero-dependency environment variable validator with full TypeScript support. Designed for Node.js, React, and Vite applications with a clean, schema-based API.
 
@@ -15,15 +15,15 @@ Managing environment variables in modern applications is error-prone. Missing va
 ## Installation
 
 ```bash
-npm install @rhap/env-guardian
+npm install env-guardian
 ```
 
 ```bash
-yarn add @rhap/env-guardian
+yarn add env-guardian
 ```
 
 ```bash
-pnpm add @rhap/env-guardian
+pnpm add env-guardian
 ```
 
 ## Quick Start
@@ -31,7 +31,7 @@ pnpm add @rhap/env-guardian
 Define your environment schema and let TypeScript do the rest:
 
 ```typescript
-import { defineEnv, ENV } from '@rhap/env-guardian';
+import { defineEnv, ENV } from 'env-guardian';
 
 export const env = defineEnv({
   API_URL: ENV.string(),
@@ -131,7 +131,7 @@ Custom error class thrown when validation fails.
 
 **Example:**
 ```typescript
-import { defineEnv, ENV, EnvValidationError } from '@rhap/env-guardian';
+import { defineEnv, ENV, EnvValidationError } from 'env-guardian';
 
 try {
   const env = defineEnv({
@@ -151,7 +151,7 @@ try {
 
 ```typescript
 // config/env.ts
-import { defineEnv, ENV } from '@rhap/env-guardian';
+import { defineEnv, ENV } from 'env-guardian';
 
 export const env = defineEnv({
   NODE_ENV: ENV.string().default('development'),

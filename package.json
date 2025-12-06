@@ -1,5 +1,5 @@
 {
-  "name": "@rhap/env-guardian",
+  "name": "env-guardian",
   "version": "1.0.0",
   "description": "Zero-dependency schema-based environment variable validator for Node.js, React, and Vite",
   "main": "dist/index.js",
@@ -31,10 +31,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rhaprace/env-guardian.git"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
