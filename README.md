@@ -379,10 +379,10 @@ const env = defineEnv({
   PORT: ENV.number().default(3000),
 });
 
-// ✅ Type-safe
+// Type-safe
 const port: number = env.PORT;
 
-// ❌ TypeScript error
+// TypeScript error
 const port: string = env.PORT;
 ```
 
