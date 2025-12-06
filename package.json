@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "test": "npm run build && node dist/test/test.js",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -31,6 +32,7 @@
     "url": "https://github.com/your-org/env-guardian.git"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "typescript": "^5.3.0"
   },
   "engines": {

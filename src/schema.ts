@@ -37,7 +37,7 @@ type InferSchemaType<S extends Schema> = S extends StringSchema
   ? boolean
   : never;
 
-class SchemaBuilder<T> {
+export class SchemaBuilder<T> {
   constructor(private schema: BaseSchema<T>) {}
 
   optional(): SchemaBuilder<T> {
