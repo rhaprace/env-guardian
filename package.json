@@ -1,0 +1,39 @@
+{
+  "name": "@rhap/env-guardian",
+  "version": "1.0.0",
+  "description": "Zero-dependency schema-based environment variable validator for Node.js, React, and Vite",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "environment",
+    "env",
+    "validation",
+    "schema",
+    "typescript",
+    "node",
+    "react",
+    "vite",
+    "zero-dependencies"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/env-guardian.git"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
