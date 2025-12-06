@@ -1,4 +1,4 @@
-# env-guardian
+# rhap-env-guardian
 
 A production-ready, zero-dependency environment variable validator with full TypeScript support. Designed for Node.js, React, and Vite applications with a clean, schema-based API.
 

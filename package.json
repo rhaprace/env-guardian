@@ -1,5 +1,5 @@
 {
-  "name": "env-guardian",
+  "name": "rhap-env-guardian",
   "version": "1.0.0",
   "description": "Zero-dependency schema-based environment variable validator for Node.js, React, and Vite",
   "main": "dist/index.js",
